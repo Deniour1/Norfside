@@ -30,28 +30,106 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .tablet-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 2;
+            animation: scanline 10s linear infinite;
+        }
+        .tablet-frame::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(
+                circle at center,
+                transparent 0%,
+                rgba(0, 0, 0, 0.3) 90%
+            );
+            pointer-events: none;
+            z-index: 3;
+        }
+        @keyframes scanline {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100%);
+            }
         }
         .terminal-frame {
-            background-color: #333;
-            border: 2px solid orange;
+            background-color: #3f0606;
+            border: 5px solid #ce0000;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
+            position: relative;
+            animation: flicker 0.15s infinite, chromatic-aberration 6s infinite;
+            overflow: hidden;
+        }
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            5% { opacity: 0.95; }
+            10% { opacity: 0.9; }
+            15% { opacity: 0.95; }
+            20% { opacity: 0.98; }
+            25% { opacity: 0.95; }
+            30% { opacity: 0.9; }
+            35% { opacity: 0.95; }
+            40% { opacity: 0.98; }
+            45% { opacity: 0.95; }
+            50% { opacity: 0.9; }
+            55% { opacity: 0.95; }
+            60% { opacity: 0.98; }
+            65% { opacity: 0.95; }
+            70% { opacity: 0.9; }
+            75% { opacity: 0.95; }
+            80% { opacity: 0.98; }
+            85% { opacity: 0.95; }
+            90% { opacity: 0.9; }
+            95% { opacity: 0.95; }
+            100% { opacity: 0.98; }
+        }
+        @keyframes chromatic-aberration {
+            0% { text-shadow: 0.55px 0 0 rgb(0, 255, 0), -0.55px 0 0 rgb(255, 0, 0); }
+            25% { text-shadow: 0.75px 0 0 rgb(0, 255, 0), -0.75px 0 0 rgb(255, 0, 0); }
+            50% { text-shadow: 0.55px 0 0 rgb(0, 255, 0), -0.55px 0 0 rgb(255, 0, 0); }
+            75% { text-shadow: 0.75px 0 0 rgb(0, 255, 0), -0.75px 0 0 rgb(255, 0, 0); }
+            100% { text-shadow: 0.55px 0 0 rgb(0, 255, 0), -0.55px 0 0 rgb(255, 0, 0); }
         }
         .terminal-header {
-            background-color: #222;
-            padding: 10px;
-            border-bottom: 2px solid orange;
+            background-color: #2e0303;
+            padding: 25px;
+            border-bottom: 5px solid #ce0000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: orange;
+            color: rgb(255, 0, 0);
+            position: relative;
+            z-index: 1;
         }
         .terminal-header .title {
-            font-size: 1.5em;
+            font-size: 2.5em;
         }
         .terminal-header .buttons {
             display: flex;
@@ -62,6 +140,17 @@
             height: 15px;
             border-radius: 50%;
             background-color: orange;
+            position: relative;
+        }
+        .terminal-header .button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
         }
         .terminal {
             background: repeating-linear-gradient(
@@ -74,21 +163,48 @@
             padding: 20px;
             flex-grow: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.03) 0%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.03) 100%
+            );
+            animation: screen-glare 10s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes screen-glare {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         .terminal div {
             font-size: 1.5vw;
             min-height: 20px;
             line-height: 1.5;
+            position: relative;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .input-line {
-            display: flex;
-            align-items: center;
+            display: none;
         }
         .prompt {
             color: #54e167;
             margin-right: 8px;
+            text-shadow: 0 0 5px rgba(84, 225, 103, 0.5);
+            flex-shrink: 0;
         }
         .terminal input {
             font-family: 'VT323', monospace;
@@ -100,6 +216,12 @@
             outline: none;
             padding: 0;
             margin: 0;
+            position: relative;
+            z-index: 1;
+            caret-color: transparent;
+            text-shadow: 0 0 5px rgba(84, 225, 103, 0.5);
+            max-width: 100%;
+            overflow: hidden;
         }
         @keyframes blink {
             0%, 100% { opacity: 1; }
@@ -107,28 +229,37 @@
         }
         .cursor {
             display: inline-block;
-            width: 8px;
-            height: 1.5vw;
+            width: 25px;
+            height: 1.3vw;
             background-color: #54e167;
             margin-left: 2px;
             animation: blink 1s infinite;
             vertical-align: middle;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 10px rgba(84, 225, 103, 0.7);
         }
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        .flicker {
-            animation: flicker 0.15s infinite;
-        }
-        #output {
+        .input-wrapper {
+            position: relative;
             flex-grow: 1;
-            overflow-y: auto;
+            display: flex;
+            align-items: center;
+            max-width: calc(100% - 20px);
+            overflow: hidden;
+        }
+        .typewriter-line {
+            display: flex;
+            align-items: center;
+            max-width: 100%;
+            overflow: hidden;
         }
         #main-terminal {
             display: none;
-            flex-grow: 1;
-            flex-direction: column;
+        }
+        #main-terminal.active .input-line {
+            display: flex;
         }
     </style>
 </head>
@@ -148,8 +279,10 @@
                 <div id="output"></div>
                 <div class="input-line">
                     <span class="prompt">></span>
-                    <input type="text" id="input" autofocus>
-                    <span class="cursor"></span>
+                    <div class="input-wrapper">
+                        <input type="text" id="input" autofocus>
+                        <span class="cursor"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -157,9 +290,10 @@
 
     <script>
         const lines = [
-            'NC -V CYPRESS-DECODING.COM 420',
-            'CONNECTING TO CYPRESS-DECODING:420.',
-            'INITIATING SSL HANDSHAKE...'
+            'Cypress@Norfside$> NC -V CYPRESS-DECODING.COM 420',
+            '> CONNECTING TO CYPRESS-DECODING:420.',
+            '> INITIATING SSL HANDSHAKE...',
+            '> CONNECTION ESTABLISHED. WELCOME TO THE CYPRESS TERMINAL.'
         ];
 
         function fibonacciSequence(n) {
@@ -242,48 +376,51 @@
 
         async function typeText(element, text, isLast = false) {
             const lineDiv = document.createElement('div');
+            lineDiv.className = 'typewriter-line';
             element.appendChild(lineDiv);
+            
+            const textSpan = document.createElement('span');
+            lineDiv.appendChild(textSpan);
             
             const cursor = document.createElement('span');
             cursor.className = 'cursor';
             lineDiv.appendChild(cursor);
             
             for (let i = 0; i < text.length; i++) {
-                lineDiv.insertBefore(document.createTextNode(text[i]), cursor);
+                textSpan.textContent += text[i];
+                cursor.style.left = `${textSpan.offsetWidth}px`;
                 await new Promise(resolve => setTimeout(resolve, 50));
             }
 
             if (!isLast) {
-                cursor.remove();
-            } else {
                 cursor.remove();
             }
         }
 
         async function displayIntro() {
             const terminal = document.getElementById('terminal');
+            const mainTerminal = document.getElementById('main-terminal');
             
-            // Type first line
-            await typeText(terminal, lines[0]);
+            await typeText(terminal, lines[0], false);
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            // Type second line with delay
-            await typeText(terminal, lines[1]);
+            await typeText(terminal, lines[1], false);
             await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Type third line with delay and cursor
-            await typeText(terminal, lines[2], true);
+            await typeText(terminal, lines[2], false);
+            await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Wait before switching to main terminal
+            await typeText(terminal, lines[3], false);
+            
             await new Promise(resolve => setTimeout(resolve, 2000));
             
-            // Switch to main terminal
             terminal.style.display = 'none';
-            document.getElementById('main-terminal').style.display = 'flex';
-            document.getElementById('input').focus();
+            mainTerminal.style.display = 'flex';
             
-            // Start the main terminal interface
-            await displayOutput('> DO YOU WANT TO CIPHER OR DECIPHER?', true);
+            await displayOutput('> DO YOU WANT TO CIPHER OR DECIPHER?', false);
+            
+            mainTerminal.classList.add('active');
+            document.getElementById('input').focus();
         }
 
         let mode = 'initial';
@@ -297,7 +434,7 @@
             const newLine = document.createElement('div');
             outputDiv.appendChild(newLine);
             
-            await typeText(newLine, text, isLast);
+            await typeText(newLine, text, false);
             document.querySelector('#main-terminal').scrollTop = document.querySelector('#main-terminal').scrollHeight;
             
             isTyping = false;
@@ -312,10 +449,19 @@
             if (isTyping) return;
             
             const input = document.getElementById('input');
+            const cursor = document.querySelector('.input-wrapper .cursor');
+            
+            if (cursor) {
+                const inputRect = input.getBoundingClientRect();
+                const inputStyle = window.getComputedStyle(input);
+                const textWidth = getTextWidth(input.value, inputStyle.font);
+                cursor.style.left = `${textWidth}px`;
+            }
 
             if (event.key === 'Enter') {
                 const value = input.value.trim();
                 input.value = '';
+                if (cursor) cursor.style.left = '0';
 
                 if (mode === 'initial') {
                     if (value.toLowerCase() === 'cipher') {
@@ -330,7 +476,7 @@
                         await displayOutput('> INVALID COMMAND. PLEASE TYPE "CIPHER" OR "DECIPHER".', true);
                     }
                 } else if (mode === 'cipher') {
-                    await displayOutput('> PROCESSING...');
+                    await displayOutput('> PROCESSING PLAINTEXT...');
                     await displayLoadingAnimation();
                     const ciphertext = shadowVeilCipher(value);
                     clearOutput();
@@ -338,7 +484,7 @@
                     mode = 'initial';
                     await displayOutput('> DO YOU WANT TO CIPHER OR DECIPHER?', true);
                 } else if (mode === 'decipher') {
-                    await displayOutput('> PROCESSING...');
+                    await displayOutput('> PROCESSING CIPHER...');
                     await displayLoadingAnimation();
                     const plaintext = shadowVeilDecipher(value);
                     clearOutput();
@@ -347,6 +493,13 @@
                     await displayOutput('> DO YOU WANT TO CIPHER OR DECIPHER?', true);
                 }
             }
+        }
+
+        function getTextWidth(text, font) {
+            const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'));
+            const context = canvas.getContext('2d');
+            context.font = font;
+            return context.measureText(text).width;
         }
 
         async function displayLoadingAnimation() {
@@ -371,9 +524,18 @@
             loadingDiv.remove();
         }
 
+        document.getElementById('input').addEventListener('input', function(e) {
+            const cursor = document.querySelector('.input-wrapper .cursor');
+            if (cursor) {
+                const inputRect = this.getBoundingClientRect();
+                const inputStyle = window.getComputedStyle(this);
+                const textWidth = getTextWidth(this.value, inputStyle.font);
+                cursor.style.left = `${textWidth}px`;
+            }
+        });
+
         document.getElementById('input').addEventListener('keydown', handleInput);
 
-        // Start the intro when the page loads
         window.addEventListener('load', displayIntro);
     </script>
 </body>
